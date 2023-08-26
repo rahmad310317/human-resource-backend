@@ -27,4 +27,13 @@ class Employees extends Model
         'verified_at'
 
     ];
+
+    public function teams()
+    {
+        return $this->belongsTo(Team::class);
+    }
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
 }
