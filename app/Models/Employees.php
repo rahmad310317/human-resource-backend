@@ -19,6 +19,7 @@ class Employees extends Model
         'name',
         'email',
         'gender',
+        'age',
         'photo',
         'phone',
         'team_id',
