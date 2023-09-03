@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(2)->unverified()->create();
+        // User::factory(2)->unverified()->create();
         // Company::factory(10)->create();
         // Team::factory(30)->create();
         // Role::factory(30)->create();

@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\API\CompanyController;
-use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
