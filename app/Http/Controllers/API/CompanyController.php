@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function all(Request $request)
+    public function fecth(Request $request)
     {
         $id = $request->input('id');
         $name = $request->input('name');
@@ -33,5 +33,10 @@ class CompanyController extends Controller
             $companies->paginate($limit),
             'Companies Found'
         );
+    }
+
+    public function create(createCompanyController $request)
+    {
+        
     }
 }

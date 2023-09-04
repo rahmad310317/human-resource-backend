@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/company', [CompanyController::class, 'all']);
+Route::get('/company', [CompanyController::class, 'fecth']);
