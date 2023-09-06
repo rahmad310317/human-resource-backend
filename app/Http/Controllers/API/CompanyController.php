@@ -37,6 +37,6 @@ class CompanyController extends Controller
 
     public function create(createCompanyController $request)
     {
-        
+        //update controller createCompany
     }
 }
