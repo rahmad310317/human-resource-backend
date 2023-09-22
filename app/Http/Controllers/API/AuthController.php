@@ -46,6 +46,7 @@ class AuthController extends Controller
                 'user' => $user
             ], 'Login Succes');
         } catch (Exception $error) {
+            // return response error
             return ResponseFormatter::error('Authentication Failed', 400);
         }
     }
@@ -78,14 +79,22 @@ class AuthController extends Controller
                 'user' => $user,
             ]);
         } catch (Exception $error) {
+            // return response error
             return ResponseFormatter::error('Authentication Failed', 400);
         }
     }
 
-    public function delete(Request $request)
+    public function logout(Request $request)
     {
         try {
+
+            // Revoke token
+            $token = $request->user()->currentAccessToken()->delete();
+
+            //return response
+            return ResponseFormatter::success('Log out Success', 200);
         } catch (Exception $error) {
+            // return response error
             return ResponseFormatter::error('Authentication Failed', 400);
         }
     }
@@ -93,9 +102,14 @@ class AuthController extends Controller
     public function fecth(Request $request)
     {
         try {
-            //code...
+            // Get user
+            $user = $request->user();
+
+            // return response
+            return ResponseFormatter::success('Fetch Success', 200);
         } catch (Exception $error) {
-            //throw $th;
+            // return response error
+            return ResponseFormatter::error('Authentication Failed', 400);
         }
     }
 }
