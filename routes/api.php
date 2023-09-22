@@ -16,14 +16,14 @@ use App\Http\Controllers\API\CompanyController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Auth Route
+Route::name('auth.')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+        Route::get('fecth', [AuthController::class, 'fecth'])->name('fecth');
+    });
 });
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-Route::get('logout', [AuthController::class, 'logout']);
-Route::get('fecth', [AuthController::class, 'fecth']);
-
-
-Route::get('/company', [CompanyController::class, 'fecth']);

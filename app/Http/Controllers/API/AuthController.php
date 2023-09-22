@@ -20,18 +20,19 @@ class AuthController extends Controller
 
             // Validate request
             $request->validate([
-                'email' => 'requied|email',
-                'password' =>  'required',
+                'email' => ['required', 'email'],
+                'password' => ['required'],
             ]);
 
             // Find user by email
             $credentials = request(['email', 'password']);
+
             if (!Auth::attempt($credentials)) {
                 return ResponseFormatter::error('Unauthorized', 401);
             }
 
             // Cek Password
-            $user = User::where('email', 'password')->first();
+            $user = User::where('email', $request->email)->firstOrFail();
             if (!Hash::check($request->password, $user->password)) {
                 throw new Exception('Invalid Password', 401);
             }
@@ -92,7 +93,7 @@ class AuthController extends Controller
             $token = $request->user()->currentAccessToken()->delete();
 
             //return response
-            return ResponseFormatter::success('Log out Success', 200);
+            return ResponseFormatter::success('Log out Success', $token);
         } catch (Exception $error) {
             // return response error
             return ResponseFormatter::error('Authentication Failed', 400);
@@ -106,7 +107,7 @@ class AuthController extends Controller
             $user = $request->user();
 
             // return response
-            return ResponseFormatter::success('Fetch Success', 200);
+            return ResponseFormatter::success('Fetch Success', $user);
         } catch (Exception $error) {
             // return response error
             return ResponseFormatter::error('Authentication Failed', 400);
