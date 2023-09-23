@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Helpers\ResponseFormatter;
-use App\Http\Controllers\Controller;
+use Exception;
+use App\Models\User;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use App\Helpers\ResponseFormatter;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CreateCompanyRequest;
+use App\Http\Requests\UpdateCompanyRequest;
 
 class CompanyController extends Controller
 {
@@ -35,8 +40,48 @@ class CompanyController extends Controller
         );
     }
 
-    public function create(Request $request)
+    public function create(CreateCompanyRequest $request)
     {
-         
+        try {
+            // TODO: Upload logo
+            if ($request->hasFile('logo')) {
+                $path  = $request->file('logo')->store('public/logos');
+            }
+
+            // TODO: Create company
+            $company = Company::create([
+                'name' => $request->name,
+                'logo' => $path
+            ]);
+            //  Cek validasi
+            if (!$company) {
+                throw new Exception('Company Not Created');
+            }
+
+            // TODO: Attach company to user
+            $user  = User::find(Auth::id());
+            $user->companies()->attach($company->id);
+
+            // TODO: load user et company  
+            $company->load('users');
+
+            // TODO: response success
+            return ResponseFormatter::success($company, 'Company Created');
+        } catch (Exception $error) {
+            // TODO: response error
+            return ResponseFormatter::error($error->getMessage(), 500);
+        }
+    }
+
+    public function update(UpdateCompanyRequest $request)
+    {
+        try {
+            // TODO: Get company
+            // TODO: Check if company exist
+            // TODO: Upload logo
+            // TODO: update company
+        } catch (Exception $error) {
+            // TODO: response error
+        }
     }
 }
