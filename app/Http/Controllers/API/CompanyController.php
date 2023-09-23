@@ -72,13 +72,14 @@ class CompanyController extends Controller
 
     public function update(UpdateCompanyRequest $request, $id)
     {
+
         try {
             // Get company
-            $company = Company::findOrFail($id);
+            $company = Company::find($id);
 
-            // Check if company exist
+            // Check if company exists
             if (!$company) {
-                throw new Exception("Company Not Found");
+                throw new Exception('Company not found');
             }
 
             // Upload logo
@@ -86,13 +87,15 @@ class CompanyController extends Controller
                 $path = $request->file('logo')->store('public/logos');
             }
 
-            // update company
+            // Update company
             $company->update([
-                'name' =>  $request->name,
-                'logo' =>  $path
+                'name' => $request->name,
+                'logo' => $path
             ]);
-        } catch (Exception $error) {
-            return ResponseFormatter::error($error->getMessage(), 500);
+
+            return ResponseFormatter::success($company, 'Company updated');
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
         }
     }
 }

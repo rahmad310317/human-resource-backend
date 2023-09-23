@@ -28,10 +28,9 @@ Route::name('auth.')->group(function () {
     });
 });
 
-// Route Company 
 // Company API
 Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(function () {
     Route::get('', [CompanyController::class, 'fetch'])->name('fetch');
     Route::post('', [CompanyController::class, 'create'])->name('create');
-    Route::put('update/{id}', [CompanyController::class, 'update'])->name('update');
+    Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
 });
