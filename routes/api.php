@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CompanyController;
+use Laravel\Sanctum\Sanctum;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,14 @@ Route::name('auth.')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-        Route::get('fecth', [AuthController::class, 'fecth'])->name('fecth');
+        Route::get('fetch', [AuthController::class, 'fetch'])->name('fetch');
     });
 });
 
+// Route Company 
+// Company API
+Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(function () {
+    Route::get('', [CompanyController::class, 'fetch'])->name('fetch');
+    Route::post('', [CompanyController::class, 'create'])->name('create');
+    Route::put('update/{id}', [CompanyController::class, 'update'])->name('update');
+});

@@ -100,7 +100,7 @@ class AuthController extends Controller
         }
     }
 
-    public function fecth(Request $request)
+    public function fetch(Request $request)
     {
         try {
             // Get user

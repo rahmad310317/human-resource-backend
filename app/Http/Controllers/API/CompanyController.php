@@ -14,7 +14,7 @@ use App\Http\Requests\UpdateCompanyRequest;
 
 class CompanyController extends Controller
 {
-    public function fecth(Request $request)
+    public function fetch(Request $request)
     {
         $id = $request->input('id');
         $name = $request->input('name');
@@ -39,49 +39,60 @@ class CompanyController extends Controller
             'Companies Found'
         );
     }
-
     public function create(CreateCompanyRequest $request)
     {
         try {
-            // TODO: Upload logo
+            // Upload logo
             if ($request->hasFile('logo')) {
-                $path  = $request->file('logo')->store('public/logos');
+                $path = $request->file('logo')->store('public/logos');
             }
 
-            // TODO: Create company
+            // Create company
             $company = Company::create([
                 'name' => $request->name,
                 'logo' => $path
             ]);
-            //  Cek validasi
+
             if (!$company) {
-                throw new Exception('Company Not Created');
+                throw new Exception('Company not created');
             }
 
-            // TODO: Attach company to user
-            $user  = User::find(Auth::id());
+            // Attach company to user
+            $user = User::find(Auth::id());
             $user->companies()->attach($company->id);
 
-            // TODO: load user et company  
+            // Load users at company
             $company->load('users');
 
-            // TODO: response success
-            return ResponseFormatter::success($company, 'Company Created');
-        } catch (Exception $error) {
-            // TODO: response error
-            return ResponseFormatter::error($error->getMessage(), 500);
+            return ResponseFormatter::success($company, 'Company created');
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
         }
     }
 
-    public function update(UpdateCompanyRequest $request)
+    public function update(UpdateCompanyRequest $request, $id)
     {
         try {
-            // TODO: Get company
-            // TODO: Check if company exist
-            // TODO: Upload logo
-            // TODO: update company
+            // Get company
+            $company = Company::findOrFail($id);
+
+            // Check if company exist
+            if (!$company) {
+                throw new Exception("Company Not Found");
+            }
+
+            // Upload logo
+            if ($request->hasFile('logo')) {
+                $path = $request->file('logo')->store('public/logos');
+            }
+
+            // update company
+            $company->update([
+                'name' =>  $request->name,
+                'logo' =>  $path
+            ]);
         } catch (Exception $error) {
-            // TODO: response error
+            return ResponseFormatter::error($error->getMessage(), 500);
         }
     }
 }
