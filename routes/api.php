@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CompanyController;
-use Laravel\Sanctum\Sanctum;
+use App\Http\Controllers\TeamController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,6 @@ Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(fu
     Route::post('', [CompanyController::class, 'create'])->name('create');
     Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
 });
+
+Route::post('team', [TeamController::class, 'create'])->middleware('auth:sanctum');
+Route::post('team/update/{id}', [TeamController::class, 'update'])->middleware('auth:sanctum');
