@@ -36,5 +36,10 @@ Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(fu
     Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
 });
 
-Route::post('team', [TeamController::class, 'create'])->middleware('auth:sanctum');
-Route::post('team/update/{id}', [TeamController::class, 'update'])->middleware('auth:sanctum');
+
+Route::prefix('company')->middleware('auth:sanctum')->name('team.')->group(function () {
+    Route::post('', [TeamController::class, 'create'])->name('create');
+    Route::post('update/{id}', [TeamController::class, 'update'])->name('update');
+    Route::get('', [TeamController::class, 'fetch'])->name('fetch');
+    Route::delete('{id}', [TeamController::class, 'destroy'])->name('destroy');
+});

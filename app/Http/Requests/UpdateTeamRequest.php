@@ -23,7 +23,9 @@ class UpdateTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' =>  'required|string|max:255',
+            'icon' =>  'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'company_id' => 'required|integer|exists:companies,id'
         ];
     }
 }
