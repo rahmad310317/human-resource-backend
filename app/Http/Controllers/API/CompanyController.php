@@ -16,38 +16,40 @@ class CompanyController extends Controller
 {
     public function fetch(Request $request)
     {
-        $id = $request->input('id');
-        $name = $request->input('name');
-        $limit = $request->input('limit', 10);
-        $companiesQuery = Company::with(['users'])->whereHas('users', function ($query) {
-            $query->where('user_id', Auth::id());
-        });
-        if ($id) {
-            $company = $companiesQuery->find($id);
+        try {
+            $id = $request->input('id');
+            $name = $request->input('name');
+            $limit = $request->input('limit', 10);
+            $companiesQuery = Company::with(['users'])->whereHas('users', function ($query) {
+                $query->where('user_id', Auth::id());
+            });
+            if ($id) {
+                $company = $companiesQuery->find($id);
 
-            if ($company) {
-                return ResponseFormatter::success($company, 'Company Found');
+                if ($company) {
+                    return ResponseFormatter::success($company, 'Company Found');
+                }
+                return ResponseFormatter::error('Company Not Found', 404);
             }
-            return ResponseFormatter::error('Company Not Found', 404);
+
+            $companies = Company::with(['users']);
+            $companies = $companiesQuery;
+
+            if ($name) {
+                $companies->where('name', 'like', '%' . $name . '%');
+            }
+
+            return ResponseFormatter::success(
+                $companies->paginate($limit),
+                'Companies Found'
+            );
+        } catch (Exception $error) {
+            return ResponseFormatter::error($error, 'Company Failed');
         }
-
-        $companies = Company::with(['users']);
-        $companies = $companiesQuery;
-
-        if ($name) {
-            $companies->where('name', 'like', '%' . $name . '%');
-        }
-
-        return ResponseFormatter::success(
-            $companies->paginate($limit),
-            'Companies Found'
-        );
     }
     public function create(CreateCompanyRequest $request)
     {
         try {
-
-
             // Upload logo
             if ($request->hasFile('logo')) {
                 $path = $request->file('logo')->store('public/logos');

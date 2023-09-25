@@ -15,6 +15,7 @@ class RoleController extends Controller
     public function fetch(Request $request)
     {
         try {
+
             $id = $request->input('id');
             $name = $request->input('name');
             $limit = $request->input('limit', 10);
