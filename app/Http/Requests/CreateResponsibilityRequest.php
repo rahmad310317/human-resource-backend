@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRoleRequest extends FormRequest
+class CreateResponsibilityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' =>  'required|string|max:255',
+            //
         ];
     }
 }

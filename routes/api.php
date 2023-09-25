@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\CompanyController;
+use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\TeamController;
+use App\Http\Controllers\API\CompanyController;
+
 
 
 /*
@@ -48,6 +50,6 @@ Route::prefix('team')->middleware('auth:sanctum')->name('team.')->group(function
 Route::prefix('role')->middleware('auth:sanctum')->name('role.')->group(function () {
     Route::post('', [RoleController::class, 'create'])->name('create');
     Route::post('update/{id}', [RoleController::class, 'update'])->name('update');
-    Route::get('', [TeamController::class, 'fetch'])->name('fetch');
+    Route::get('', [RoleController::class, 'fetch'])->name('fetch');
     Route::delete('{id}', [RoleController::class, 'destroy'])->name('destroy');
 });

@@ -38,6 +38,10 @@ class RoleController extends Controller
                 $roles->where('name', 'like', '%' . $name . '%');
             }
 
+            if ($with_responsibilities) {
+                $roles->with('responsibilities');
+            }
+
             return ResponseFormatter::success(
                 $roles->paginate($limit),
                 'Role found'
