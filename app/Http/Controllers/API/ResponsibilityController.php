@@ -37,7 +37,7 @@ class ResponsibilityController extends Controller
 
             if ($responsibilities) {
                 $responsibilities->where('name', 'like', '%' . $name . '%');
-            }
+            }   
 
             // response success
             return ResponseFormatter::success(
