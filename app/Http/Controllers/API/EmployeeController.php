@@ -25,22 +25,21 @@ class EmployeeController extends Controller
             $company_id = $request->input('company_id');
             $limit = $request->input('limit', 10);
 
-
             $employeeQuery = Employees::query();
-
-            // get single data
+            // Get single data
             if ($id) {
-                $employee = $employeeQuery->with(['team', 'roles'])->find($id);
+                $employee = $employeeQuery->with(['team', 'role'])->find($id);
 
                 if ($employee) {
-                    return ResponseFormatter::success($employee, 'Employess Found');
+                    return ResponseFormatter::success($employee, 'Employee found');
                 }
-                return ResponseFormatter::error('Employee not found', $employee);
+
+                return ResponseFormatter::error('Employee not found', 404);
             }
 
-            // Get multi data
 
-            $employees =  $employeeQuery;
+            // Get multiple data
+            $employees = $employeeQuery;
 
             if ($name) {
                 $employees->where('name', 'like', '%' . $name . '%');
@@ -52,7 +51,7 @@ class EmployeeController extends Controller
                 $employees->where('age', $age);
             }
             if ($phone) {
-                $employees->where('phone', $phone);
+                $employees->where('phone', 'like', '%' . $phone . '%');
             }
             if ($role_id) {
                 $employees->where('role_id', $role_id);
@@ -65,13 +64,13 @@ class EmployeeController extends Controller
                 $employees->whereHas('team', function ($query) use ($company_id) {
                     $query->where('company_id', $company_id);
                 });
-                return ResponseFormatter::success(
-                    $employees->panigate($limit),
-                    'Employees Found'
-                );
             }
+            return ResponseFormatter::success(
+                $employees->paginate($limit),
+                'Employees found'
+            );
         } catch (Exception $error) {
-            return ResponseFormatter::error($error->getMessage(), 500);
+            return ResponseFormatter::error($error->getMessage(), 404);
         }
     }
 
