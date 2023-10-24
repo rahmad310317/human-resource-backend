@@ -95,7 +95,7 @@ class EmployeeController extends Controller
                 'team_id' => $request->team_id,
                 'role_id' => $request->role_id,
             ]);
-
+            // cek update employee
             if (!$employee) {
                 throw new Exception('Employee not Created');
             }
