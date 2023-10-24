@@ -102,15 +102,10 @@ class AuthController extends Controller
 
     public function fetch(Request $request)
     {
-        try {
-            // Get user
-            $user = $request->user();
+        // Get user
+        $user = $request->user();
 
-            // return response
-            return ResponseFormatter::success('Fetch Success', $user);
-        } catch (Exception $error) {
-            // return response error
-            return ResponseFormatter::error('Authentication Failed', 400);
-        }
+        // Return response
+        return ResponseFormatter::success($user, 'Fetch success');
     }
 }
