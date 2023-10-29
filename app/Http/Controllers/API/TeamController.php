@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 
 use Exception;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseFormatter;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 
@@ -18,7 +19,7 @@ class TeamController extends Controller
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
 
-        $teamQuery = Team::query();
+        $teamQuery = Team::withCount('employees');
 
         // Get single data
         if ($id) {
