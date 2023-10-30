@@ -29,12 +29,12 @@ class Employees extends Model
 
     ];
 
-    public function teams()
+    public function team()
     {
         return $this->belongsTo(Team::class);
     }
-    public function roles()
+    public function role()
     {
-        return $this->hasMany(Role::class);
+        return $this->belongsTo(Role::class);
     }
 }

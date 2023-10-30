@@ -25,7 +25,7 @@ class EmployeeController extends Controller
             $company_id = $request->input('company_id');
             $limit = $request->input('limit', 10);
 
-            $employeeQuery = Employees::query();
+            $employeeQuery = Employees::with('team', 'role');
             // Get single data
             if ($id) {
                 $employee = $employeeQuery->with(['team', 'role'])->find($id);
