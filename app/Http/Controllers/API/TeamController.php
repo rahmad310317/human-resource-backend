@@ -56,7 +56,7 @@ class TeamController extends Controller
             // Create team
             $team = Team::create([
                 'name' => $request->name,
-                'icon' => $path,
+                'icon' => isset($path),
                 'company_id' => $request->company_id,
             ]);
 
